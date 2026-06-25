@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CS2 ELO Leaderboard</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0a0a0a;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    width: 420px;
+    margin: 40px auto;
+}
+
+h1 {
+    text-align: center;
+    color: #ff5500;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    background: #151515;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+}
+
+.rank {
+    width: 35px;
+    color: #aaa;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.name {
+    flex: 1;
+    font-size: 18px;
+}
+
+.level {
+    color: #888;
+    margin-right: 10px;
+}
+
+.elo {
+    color: #ff5500;
+    font-weight: bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+<h1>CS2 ELO RANKING</h1>
+
+<div id="list"></div>
+</div>
+
+<script>
+// 🔥 Players (EDIT HERE)
+const players = [
+    { name: "Stivi", elo: 2450, img: "https://i.imgur.com/8Km9tLL.png" },
+    { name: "Alex", elo: 2200, img: "https://i.imgur.com/8Km9tLL.png" },
+    { name: "Ivan", elo: 1800, img: "https://i.imgur.com/8Km9tLL.png" }
+];
+
+// FACEIT-like levels
+function getLevel(elo) {
+    if (elo < 500) return 1;
+    if (elo < 750) return 2;
+    if (elo < 900) return 3;
+    if (elo < 1050) return 4;
+    if (elo < 1200) return 5;
+    if (elo < 1350) return 6;
+    if (elo < 1500) return 7;
+    if (elo < 1750) return 8;
+    if (elo < 2000) return 9;
+    return 10;
+}
+
+// Sort by elo
+players.sort((a, b) => b.elo - a.elo);
+
+const list = document.getElementById("list");
+
+players.forEach((p, i) => {
+    list.innerHTML += `
+    <div class="card">
+        <div class="rank">#${i + 1}</div>
+        <img class="avatar" src="${p.img}">
+        <div class="name">${p.name}</div>
+        <div class="level">Lvl ${getLevel(p.elo)}</div>
+        <div class="elo">${p.elo}</div>
+    </div>
+    `;
+});
+</script>
+
+</body>
+</html>
