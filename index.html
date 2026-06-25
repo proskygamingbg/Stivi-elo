@@ -1,115 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>CS2 ELO Leaderboard</title>
-
-<style>
-body {
-    margin: 0;
-    background: #0a0a0a;
-    font-family: Arial, sans-serif;
-    color: white;
-}
-
-.container {
-    width: 420px;
-    margin: 40px auto;
-}
-
-h1 {
-    text-align: center;
-    color: #ff5500;
-}
-
-.card {
-    display: flex;
-    align-items: center;
-    background: #151515;
-    margin: 10px 0;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #2a2a2a;
-}
-
-.rank {
-    width: 35px;
-    color: #aaa;
-}
-
-.avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin-right: 12px;
-    object-fit: cover;
-}
-
-.name {
-    flex: 1;
-    font-size: 18px;
-}
-
-.level {
-    color: #888;
-    margin-right: 10px;
-}
-
-.elo {
-    color: #ff5500;
-    font-weight: bold;
-}
-</style>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CS2 Rating Checker</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
+  <header class="top">
+    <h1>CS2 / FACEIT Rating Checker</h1>
+    <p class="subtitle">Add players (nickname, position, photo, rating). Levels are based on configurable thresholds.</p>
+  </header>
 
-<div class="container">
-<h1>CS2 ELO RANKING</h1>
+  <main class="container">
+    <section class="form-section">
+      <h2>Add player</h2>
+      <form id="playerForm">
+        <label>
+          Nickname
+          <input type="text" id="nickname" required placeholder="PlayerNick" />
+        </label>
 
-<div id="list"></div>
-</div>
+        <label>
+          Position
+          <select id="position">
+            <option value="Entry">Entry</option>
+            <option value="Rifler">Rifler</option>
+            <option value="AWPer">AWPer</option>
+            <option value="Support">Support</option>
+            <option value="IGL">IGL</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
 
-<script>
-// 🔥 Players (EDIT HERE)
-const players = [
-    { name: "Stivi", elo: 2450, img: "https://i.imgur.com/8Km9tLL.png" },
-    { name: "Alex", elo: 2200, img: "https://i.imgur.com/8Km9tLL.png" },
-    { name: "Ivan", elo: 1800, img: "https://i.imgur.com/8Km9tLL.png" }
-];
+        <label>
+          Rating (ELO)
+          <input type="number" id="rating" required min="0" step="1" placeholder="e.g. 1500" />
+        </label>
 
-// FACEIT-like levels
-function getLevel(elo) {
-    if (elo < 500) return 1;
-    if (elo < 750) return 2;
-    if (elo < 900) return 3;
-    if (elo < 1050) return 4;
-    if (elo < 1200) return 5;
-    if (elo < 1350) return 6;
-    if (elo < 1500) return 7;
-    if (elo < 1750) return 8;
-    if (elo < 2000) return 9;
-    return 10;
-}
+        <label>
+          Photo (URL)
+          <input type="url" id="photoUrl" placeholder="https://..." />
+        </label>
 
-// Sort by elo
-players.sort((a, b) => b.elo - a.elo);
+        <label>
+          Or upload photo
+          <input type="file" id="photoFile" accept="image/*" />
+        </label>
 
-const list = document.getElementById("list");
+        <div class="row">
+          <button type="submit">Add player</button>
+          <button type="button" id="clearAll">Clear all</button>
+        </div>
+      </form>
 
-players.forEach((p, i) => {
-    list.innerHTML += `
-    <div class="card">
-        <div class="rank">#${i + 1}</div>
-        <img class="avatar" src="${p.img}">
-        <div class="name">${p.name}</div>
-        <div class="level">Lvl ${getLevel(p.elo)}</div>
-        <div class="elo">${p.elo}</div>
-    </div>
-    `;
-});
-</script>
+      <hr />
 
+      <h3>Data</h3>
+      <div class="row">
+        <button id="exportJson">Export JSON</button>
+        <input type="file" id="importJsonFile" accept="application/json" />
+      </div>
+
+      <hr />
+
+      <h3>Level thresholds (editable in js/app.js)</h3>
+      <p class="muted">Default thresholds are configurable: edit the thresholds array in js/app.js to match your official mapping.</p>
+    </section>
+
+    <section class="players-section">
+      <h2>Players</h2>
+      <div id="playersList" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Static demo — stores data in your browser. To publish: push these files to a GitHub repo and enable GitHub Pages.</small>
+  </footer>
+
+  <script src="js/app.js"></script>
 </body>
 </html>
